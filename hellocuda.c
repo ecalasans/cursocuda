@@ -1,5 +1,8 @@
+//
+// Created by eric on 20/12/2020.
+//
 #include "stdio.h"
-#include <iostream>
+#include "cuda.h"
 
 __global__ void printFromGPU(){
     printf("Olá!  Sou a thread [%d, %d] falando da GPU!\n",
@@ -8,11 +11,9 @@ __global__ void printFromGPU(){
 
 
 int main(){
-
-    std::cout << "Olá!  Sou a CPU!!" << std::endl;
+    printf("Olá!  Sou a CPU!\n");
     printFromGPU<<<1,1>>>();
     cudaDeviceSynchronize();
 
     return 0;
 }
-
