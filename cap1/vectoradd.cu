@@ -7,9 +7,11 @@
 #include <sys/time.h>
 
 #define N 512
+#define TAM_BLOCO 8
 
 __global__ void deviceAdd(int* a, int* b, int* c){
-    c[blockIdx.x] = a[blockIdx.x] + b[blockIdx.x];
+    int indice = threadIdx.x + blockIdx.x * blockDim.x;
+    c[indice] = a[indice] + b[indice];
 }
 
 void fillArray(int* data){
@@ -31,6 +33,7 @@ int main(){
 
     int size = N * sizeof(int);
     std::size_t tam = N * sizeof(int);
+    int n_blocos = N/TAM_BLOCO;
 
     a = (int *)malloc(size);
     fillArray(a);
@@ -48,7 +51,7 @@ int main(){
     cudaMemcpy(d_b, b, size, cudaMemcpyHostToDevice);
 
     gettimeofday(&inicio, NULL);
-    deviceAdd<<<N,1>>>(d_a, d_b, d_c);   //<<<blocos, threads>>>
+    deviceAdd<<<n_blocos,TAM_BLOCO>>>(d_a, d_b, d_c);   //<<<blocos, threads>>>
     gettimeofday(&fim, NULL);
 
     cudaMemcpy(c, d_c, size, cudaMemcpyDeviceToHost);
