@@ -27,14 +27,13 @@ void printResults(int* a, int* b, int* c){
 }
 
 int main(){
-    int *a, *b, *c;  // apontam para a device memory(global)
+    int *a, *b, *c;
     int *d_a, *d_b, *d_c;
     struct timeval inicio, fim;
 
     int size = N * sizeof(int);
     std::size_t tam = N * sizeof(int);
-    int blocos = N / TAM_BLOCO;
-    std::cout << blocos << std::endl;
+    int n_blocos = N/TAM_BLOCO;
 
     a = (int *)malloc(size);
     fillArray(a);
@@ -52,7 +51,7 @@ int main(){
     cudaMemcpy(d_b, b, size, cudaMemcpyHostToDevice);
 
     gettimeofday(&inicio, NULL);
-    deviceAdd<<<blocos,TAM_BLOCO>>>(d_a, d_b, d_c);   //<<<blocos, threads>>>
+    deviceAdd<<<n_blocos,TAM_BLOCO>>>(d_a, d_b, d_c);   //<<<blocos, threads>>>
     gettimeofday(&fim, NULL);
 
     cudaMemcpy(c, d_c, size, cudaMemcpyDeviceToHost);
