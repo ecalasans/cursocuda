@@ -14,6 +14,8 @@ int main(){
     int count = 0;
     int* dev_c;  // no device
 
+    cudaDeviceProp prop;
+
     cudaMalloc((void**)&dev_c, sizeof(int)); // aloca memória no device
 
     addVector<<<1,1>>>(2, 7, dev_c);  // <<<bloco, thread>>>(parâmetros da função)
@@ -28,7 +30,9 @@ int main(){
 
     printf("Total de dispositivos graficos = %d\n", count);
 
+    //Mostra propriedades da GPU
+    cudaGetDeviceProperties(&prop, 0); //Parâmetros:  variável contendo propriedades e nº do dispositivo
 
-
+    printf("Nome do dispositivo:  %s\n", prop.name);
     return 0;
 }
