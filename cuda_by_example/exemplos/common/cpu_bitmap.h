@@ -19,6 +19,7 @@
 
 #include "gl_helper.h"
 
+
 struct CPUBitmap {
     unsigned char    *pixels;
     int     x, y;
