@@ -14,6 +14,10 @@ __global__ void deviceAdd(int* a, int* b, int* c){
     c[indice] = a[indice] + b[indice];
 }
 
+__global__ void tamanhoGrade(){
+    printf("Tamanho da grade = %d x %d\n", gridDim.x, gridDim.y);
+}
+
 void fillArray(int* data){
     for (int idx = 0; idx < N; idx++){
         data[idx] = idx;
@@ -53,6 +57,8 @@ int main(){
     gettimeofday(&inicio, NULL);
     deviceAdd<<<1,N>>>(d_a, d_b, d_c);   //<<<blocos, threads>>>
     gettimeofday(&fim, NULL);
+
+    tamanhoGrade<<<1,1>>>();
 
     cudaMemcpy(c, d_c, size, cudaMemcpyDeviceToHost);
 
